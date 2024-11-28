@@ -38,7 +38,7 @@ averageconsumption_engine = create_engine(SQLALCHEMY_DATABASE_URL_AVERAGECONSUMP
 userinfo_engine = create_engine(SQLALCHEMY_DATABASE_URL_USERINFO)
 monetaryluck_engine = create_engine(SQLALCHEMY_DATABASE_URL_MONETARYLUCK)
 
-# sessionmaker는 SQLAlchemy에서 세션을 관리하기 위한 함수이다.
+# sessionmaker는 SQLAlchemy에서 세션을 관리하기 위한 함수이다.  ㅇㅈ
 # 세션은 데이터베이스에 대한 트랜잭션을 관리하는 객체로, 데이터베이스와의 통신을 효율적으로 처리한다.
 income_SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=income_engine)
 consumption_SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=consumption_engine)

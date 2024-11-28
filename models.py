@@ -38,7 +38,7 @@ class Scholarship(scholarship_Base):
     qualification = Column(String(256), nullable=False)
     inquiry = Column(String(256), nullable=False)
 
-class Averageconsumption(consumption_Base):
+class Averageconsumption(averageconsumption_Base):
     __tablename__ = "averageconsumption"
 
     id = Column(Integer, primary_key=True, index=True)

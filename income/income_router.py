@@ -19,9 +19,8 @@ def insert_data(db, table):
 def create_consumption(income:Create, 
                        income_db: Session = Depends(get_incomedb)):
     
-    create = Income_model(
-        income_userid=income.userid,
-        income_content=income.content)
+    create = Income_model(userid=income.userid,
+        content=income.content)
 
     insert_data(income_db, create)
 

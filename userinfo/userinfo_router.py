@@ -19,12 +19,11 @@ def insert_data(db, table):
 def create_monetaryluck(userinfo:Create, 
                        userinfo_db: Session = Depends(get_userinfodb)):
     
-    create = Userinfo_model(
-        userinfo_userid=userinfo.userid,
-        userinfo_password=userinfo.password,
-        userinfo_username=userinfo.username,
-        userinfo_age=userinfo.age,
-        userinfo_gender=userinfo.gender)
+    create = Userinfo_model(userid=userinfo.userid,
+        password=userinfo.password,
+        username=userinfo.username,
+        age=userinfo.age,
+        gender=userinfo.gender)
 
     insert_data(userinfo_db, create)
 

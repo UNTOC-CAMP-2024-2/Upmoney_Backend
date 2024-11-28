@@ -19,14 +19,13 @@ def insert_data(db, table):
 def create_monetaryluck(scholarship:Create, 
                        scholarship_db: Session = Depends(get_scholarshipdb)):
     
-    create = Scholarship_model(
-        scholarship_period=scholarship.period,
-        scholarship_recipients=scholarship.recipients,
-        scholarship_money=scholarship.money,
-        scholarship_HowToAccept=scholarship.HowToAccept,
-        scholarship_subject=scholarship.subject,
-        scholarship_qualification=scholarship.qualification,
-        scholarship_inquiry=scholarship.inquiry)
+    create = Scholarship_model(period=scholarship.period,
+        recipients=scholarship.recipients,
+        money=scholarship.money,
+        HowToAccept=scholarship.HowToAccept,
+        subject=scholarship.subject,
+        qualification=scholarship.qualification,
+        inquiry=scholarship.inquiry)
 
     insert_data(scholarship_db, create)
 

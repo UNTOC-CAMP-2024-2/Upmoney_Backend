@@ -19,11 +19,10 @@ def insert_data(db, table):
 def create_averageconsumption(averageconsumption:Create, 
                 averageconsumption_db: Session = Depends(get_averageconsumptiondb)):
     
-    create = Averageconsumption_model(
-        averageconsumption_age=averageconsumption.age,
-        averageconsumption_gender=averageconsumption.gender,
-        averageconsumption_classifyid=averageconsumption.classifyid,
-        averageconsumption_content=averageconsumption.content)
+    create = Averageconsumption_model(age=averageconsumption.age,
+        gender=averageconsumption.gender,
+        classifyid=averageconsumption.classifyid,
+        content=averageconsumption.content)
 
     insert_data(averageconsumption_db, create)
 

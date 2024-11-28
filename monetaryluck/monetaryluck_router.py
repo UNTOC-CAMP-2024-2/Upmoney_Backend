@@ -19,9 +19,8 @@ def insert_data(db, table):
 def create_monetaryluck(monetaryluck:Create, 
                        monetaryluck_db: Session = Depends(get_monetaryluckdb)):
     
-    create = Monetaryluck_model(
-        monetaryluck_weekid=monetaryluck.weekid,
-        monetaryluck_content=monetaryluck.content)
+    create = Monetaryluck_model(weekid=monetaryluck.weekid,
+        content=monetaryluck.content)
 
     insert_data(monetaryluck_db, create)
 

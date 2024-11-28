@@ -19,10 +19,9 @@ def insert_data(db, table):
 def create_consumption(consumption:Create, 
                        consumption_db: Session = Depends(get_consumptiondb)):
     
-    create = Consumption_model(
-        consumption_userid=consumption.userid,
-        consumption_classifyid=consumption.classifyid,
-        consumption_content=consumption.content)
+    create = Consumption_model(userid=consumption.userid,
+        classifyid=consumption.classifyid,
+        content=consumption.content)
 
     insert_data(consumption_db, create)
 

@@ -19,10 +19,9 @@ def insert_data(db, table):
 def create_monetaryluck(totalconsumption:Create, 
                        totalconsumption_db: Session = Depends(get_totalconsumptiondb)):
     
-    create = Totalconsumption_model(
-        totalconsumption_userid=totalconsumption.userid,
-        totalconsumption_classifyid=totalconsumption.classifyid,
-        totalconsumption_content=totalconsumption.content)
+    create = Totalconsumption_model(userid=totalconsumption.userid,
+        classifyid=totalconsumption.classifyid,
+        content=totalconsumption.content)
 
     insert_data(totalconsumption_db, create)
 

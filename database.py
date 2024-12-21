@@ -7,51 +7,56 @@ import os
 load_dotenv()
 
 
-# .envÀÇ Á¤º¸¸¦ ºÒ·¯¿Â´Ù.
+# .envï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ò·ï¿½ï¿½Â´ï¿½.
 DB_HOST = os.environ.get("DB_HOST")
 DB_PASSWORD = os.environ.get("DB_PASSWORD")
 INCOME_DB_NAME = os.environ.get("INCOME_DB_NAME")
 CONSUMPTION_DB_NAME = os.environ.get("CONSUMPTION_DB_NAME")
-TOTALCONSUMPTION_DB_NAME = os.environ.get("TOTALCONSUMPTION_DB_NAME")
+TOTALCATEGORY_DB_NAME = os.environ.get("TOTALCATEGORY_DB_NAME")
+DATECONSUMPTION_DB_NAME = os.environ.get("DATECONSUMPTION_DB_NAME")
 SCHOLARSHIP_DB_NAME = os.environ.get("SCHOLARSHIP_DB_NAME")
 AVERAGECONSUMPTION_DB_NAME = os.environ.get("AVERAGECONSUMPTION_DB_NAME")
 USERINFO_DB_NAME = os.environ.get("USERINFO_DB_NAME")
 MONETARYLUCK_DB_NAME = os.environ.get("MONETARYLUCK_DB_NAME")
 DB_PORT = os.environ.get("DB_PORT", 3306)
 
-# ¾î¶² DB¿Í ¿¬°áÇÒÁö Á¤ÀÇÇÑ´Ù.
+# ï¿½î¶² DBï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
 SQLALCHEMY_DATABASE_URL_INCOME = f"mysql+mysqlconnector://root:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{INCOME_DB_NAME}"
 SQLALCHEMY_DATABASE_URL_CONSUMPTION = f"mysql+mysqlconnector://root:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{CONSUMPTION_DB_NAME}"
-SQLALCHEMY_DATABASE_URL_TOTALCONSUMPTION = f"mysql+mysqlconnector://root:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{TOTALCONSUMPTION_DB_NAME}"
+SQLALCHEMY_DATABASE_URL_TOTALCATEGORY = f"mysql+mysqlconnector://root:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{TOTALCATEGORY_DB_NAME}"
+SQLALCHEMY_DATABASE_URL_DATECONSUMPTION = f"mysql+mysqlconnector://root:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DATECONSUMPTION_DB_NAME}"
 SQLALCHEMY_DATABASE_URL_SCHOLARSHIP = f"mysql+mysqlconnector://root:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{SCHOLARSHIP_DB_NAME}"
 SQLALCHEMY_DATABASE_URL_AVERAGECONSUMPTION = f"mysql+mysqlconnector://root:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{AVERAGECONSUMPTION_DB_NAME}"
 SQLALCHEMY_DATABASE_URL_USERINFO = f"mysql+mysqlconnector://root:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{USERINFO_DB_NAME}"
 SQLALCHEMY_DATABASE_URL_MONETARYLUCK = f"mysql+mysqlconnector://root:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{MONETARYLUCK_DB_NAME}"
 
-# create_engine ÇÔ¼ö´Â µ¥ÀÌÅÍº£ÀÌ½º¿Í ¿¬°áÀ» ¼³Á¤ÇÒ ¼ö ÀÖ´Â ¿£ÁøÀ» »ý¼ºÇÑ´Ù.
-# ÀÌ ¿£ÁøÀ» ÅëÇØ µ¥ÀÌÅÍº£ÀÌ½º¿Í »óÈ£ÀÛ¿ëÇÒ ¼ö ÀÖ´Ù.
+# create_engine ï¿½Ô¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Íºï¿½ï¿½Ì½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
+# ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Íºï¿½ï¿½Ì½ï¿½ï¿½ï¿½ ï¿½ï¿½È£ï¿½Û¿ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö´ï¿½.
 income_engine = create_engine(SQLALCHEMY_DATABASE_URL_INCOME)
 consumption_engine = create_engine(SQLALCHEMY_DATABASE_URL_CONSUMPTION)
-totalconsumption_engine = create_engine(SQLALCHEMY_DATABASE_URL_TOTALCONSUMPTION)
+totalcategory_engine = create_engine(SQLALCHEMY_DATABASE_URL_TOTALCATEGORY)
+dateconsumption_engine = create_engine(SQLALCHEMY_DATABASE_URL_DATECONSUMPTION)
 scholarship_engine = create_engine(SQLALCHEMY_DATABASE_URL_SCHOLARSHIP)
 averageconsumption_engine = create_engine(SQLALCHEMY_DATABASE_URL_AVERAGECONSUMPTION)
 userinfo_engine = create_engine(SQLALCHEMY_DATABASE_URL_USERINFO)
 monetaryluck_engine = create_engine(SQLALCHEMY_DATABASE_URL_MONETARYLUCK)
 
-# sessionmaker´Â SQLAlchemy¿¡¼­ ¼¼¼ÇÀ» °ü¸®ÇÏ±â À§ÇÑ ÇÔ¼öÀÌ´Ù.  ¤·¤¸
-# ¼¼¼ÇÀº µ¥ÀÌÅÍº£ÀÌ½º¿¡ ´ëÇÑ Æ®·£Àè¼ÇÀ» °ü¸®ÇÏ´Â °´Ã¼·Î, µ¥ÀÌÅÍº£ÀÌ½º¿ÍÀÇ Åë½ÅÀ» È¿À²ÀûÀ¸·Î Ã³¸®ÇÑ´Ù.
+# sessionmakerï¿½ï¿½ SQLAlchemyï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ï¿½Ì´ï¿½.  ï¿½ï¿½ï¿½ï¿½
+# ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Íºï¿½ï¿½Ì½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Æ®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½Íºï¿½ï¿½Ì½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ È¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½ï¿½Ñ´ï¿½.
 income_SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=income_engine)
 consumption_SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=consumption_engine)
-totalconsumption_SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=totalconsumption_engine)
+totalcategory_SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=totalcategory_engine)
+dateconsumption_SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=dateconsumption_engine)
 scholarship_SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=scholarship_engine)
 averageconsumtion_SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=averageconsumption_engine)
 userinfo_SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=userinfo_engine)
 monetaryluck_SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=monetaryluck_engine)
 
-# declarative_base´Â SQLAlchemy¿¡¼­ µ¥ÀÌÅÍº£ÀÌ½ºÀÇ Å×ÀÌºí°ú ¸ÅÇÎµÉ Å¬·¡½º¸¦ Á¤ÀÇÇÒ ¶§ »ç¿ëÇÏ´Â ±âº» Å¬·¡½ºÀÌ´Ù. 
+# declarative_baseï¿½ï¿½ SQLAlchemyï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Íºï¿½ï¿½Ì½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ìºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Îµï¿½ Å¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½âº» Å¬ï¿½ï¿½ï¿½ï¿½ï¿½Ì´ï¿½. 
 income_Base = declarative_base()
 consumption_Base = declarative_base()
-totalconsumption_Base = declarative_base()
+totalcategory_Base = declarative_base()
+dateconsumption_Base = declarative_base()
 scholarship_Base = declarative_base()
 averageconsumption_Base = declarative_base()
 userinfo_Base = declarative_base()
@@ -71,8 +76,8 @@ def get_consumptiondb():
     finally:
         db.close()
 
-def get_totalconsumptiondb():
-    db = totalconsumption_SessionLocal()
+def get_totalcategorydb():
+    db = totalcategory_SessionLocal()
     try:
         yield db
     finally:
@@ -101,6 +106,13 @@ def get_userinfodb():
 
 def get_monetaryluckdb():
     db = monetaryluck_SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+        
+def get_dateconsumptiondb():
+    db = dateconsumption_SessionLocal()
     try:
         yield db
     finally:

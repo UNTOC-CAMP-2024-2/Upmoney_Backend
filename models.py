@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey, Boolean
-from database import income_Base, consumption_Base, totalconsumption_Base, scholarship_Base, averageconsumption_Base, userinfo_Base, monetaryluck_Base
+from database import income_Base, consumption_Base, totalcategory_Base, dateconsumption_Base, scholarship_Base, averageconsumption_Base, userinfo_Base, monetaryluck_Base
 
 
 # User �� ����
@@ -20,13 +20,23 @@ class Consumption(consumption_Base):
     title = Column(String(255), nullable=False)
     date = Column(DateTime, nullable = False)
 
-class Totalconsumption(totalconsumption_Base):
-    __tablename__ = "totalconsumption"
+class Totalcategory(totalcategory_Base):
+    __tablename__ = "totalcategory"
 
     id = Column(Integer, primary_key=True, index=True)
     userid = Column(String(255), nullable=False)
     classifyid = Column(Integer, nullable=False)
     content = Column(Integer, nullable=False)
+
+class Dateconsumption(dateconsumption_Base):
+    __tablename__ = "dateconsumption"
+
+    id = Column(Integer, primary_key=True, index=True)
+    userid = Column(String(255), nullable=False)
+    classifyid = Column(Integer, nullable=False)
+    content = Column(Integer, nullable=False)
+    title = Column(String(255), nullable=False)
+    date = Column(DateTime, nullable = False)
 
 class Scholarship(scholarship_Base):
     __tablename__ = "scholarship"

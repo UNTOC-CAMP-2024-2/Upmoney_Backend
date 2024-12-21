@@ -5,6 +5,7 @@ from database import get_consumptiondb
 
 from .consumption_schema import Create
 from models import Consumption as Consumption_model
+from zoneinfo import ZoneInfo
 
 router = APIRouter(
     prefix="/consumption"
@@ -21,7 +22,9 @@ def create_consumption(consumption:Create,
     
     create = Consumption_model(userid=consumption.userid,
         classifyid=consumption.classifyid,
-        content=consumption.content)
+        content=consumption.content,
+        title=consumption.title,
+        date=consumption.date.replace(tzinfo=ZoneInfo("UTC")).astimezone(ZoneInfo("Asia/Seoul")))
 
     insert_data(consumption_db, create)
 

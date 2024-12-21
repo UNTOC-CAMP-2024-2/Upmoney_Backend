@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey, Bool
 from database import income_Base, consumption_Base, totalconsumption_Base, scholarship_Base, averageconsumption_Base, userinfo_Base, monetaryluck_Base
 
 
-# User ¸ðµ¨ Á¤ÀÇ
+# User ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 class Income(income_Base):
     __tablename__ = "income"
 
@@ -17,6 +17,8 @@ class Consumption(consumption_Base):
     userid = Column(String(255), nullable=False)
     classifyid = Column(Integer, nullable=False)
     content = Column(Integer, nullable=False)
+    title = Column(String(255), nullable=False)
+    date = Column(DateTime, nullable = False)
 
 class Totalconsumption(totalconsumption_Base):
     __tablename__ = "totalconsumption"

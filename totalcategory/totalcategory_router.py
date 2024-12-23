@@ -15,14 +15,6 @@ def insert_data(db, table):
     db.commit()
     db.refresh(table)
     
-categoryconsumption = [
-    {"category":1, "sumconsumption":0},
-    {"category":2, "sumconsumption":0},
-    {"category":3, "sumconsumption":0},
-    {"category":4, "sumconsumption":0},
-    {"category":5, "sumconsumption":0},
-    {"category":6, "sumconsumption":0}
-]
 
 @router.put("/update_totalcategory", response_model=Create)
 def create_monetaryluck(totalcategory:Create, 

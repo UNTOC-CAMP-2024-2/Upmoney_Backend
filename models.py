@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey, Boolean
+from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey, Boolean, Table
 from database import income_Base, consumption_Base, totalcategory_Base, dateconsumption_Base, scholarship_Base, averageconsumption_Base, userinfo_Base, monetaryluck_Base
 
 
@@ -23,10 +23,9 @@ class Consumption(consumption_Base):
 class Totalcategory(totalcategory_Base):
     __tablename__ = "totalcategory"
 
-    id = [1, 2, 3, 4]
     userid = Column(String(255), nullable=False)
-    classifyid = Column(Integer, nullable=False)
-    content = Column(Integer, nullable=False)
+    category = Column(Integer, nullable=False)
+    consumption = Column(Integer, nullable=False)
 
 class Dateconsumption(dateconsumption_Base):
     __tablename__ = "dateconsumption"
@@ -62,8 +61,8 @@ class Averageconsumption(averageconsumption_Base):
 class Userinfo(userinfo_Base):
     __tablename__ = "userinfo"
 
-    id = Column(Integer, primary_key=True, index=True)
-    userid = Column(String(256), nullable=False)
+    userno = Column(Integer, primary_key=True, index=True)
+    userid = Column(String(256), nullable=False, unique=True)
     password = Column(String(32), nullable=False)
     username = Column(String(32), nullable=False)
     age = Column(Integer, nullable=False)

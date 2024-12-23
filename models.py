@@ -23,7 +23,7 @@ class Consumption(consumption_Base):
 class Totalcategory(totalcategory_Base):
     __tablename__ = "totalcategory"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = [1, 2, 3, 4]
     userid = Column(String(255), nullable=False)
     classifyid = Column(Integer, nullable=False)
     content = Column(Integer, nullable=False)

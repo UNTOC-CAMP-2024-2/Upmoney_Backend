@@ -15,16 +15,18 @@ def insert_data(db, table):
     db.commit()
     db.refresh(table)
 
-@router.post("/create_userinfo", response_model=Create)
-def create_monetaryluck(userinfo:Create, 
+@router.post("/signup", response_model=Create)
+def signup(newuser: Create, 
                        userinfo_db: Session = Depends(get_userinfodb)):
+    user =  get_userinfodb(newuser.userid, userinfo_db)
+    if user:
+        raise HTTPException(status_code=404, detail="User already exists")
+
+    create = Userinfo_model(userid=newuser.userid,
+                            password=newuser.password,
+                            username=newuser.username,
+                            age=newuser.age,
+                            gender=newuser.gender)
     
-    create = Userinfo_model(userid=userinfo.userid,
-        password=userinfo.password,
-        username=userinfo.username,
-        age=userinfo.age,
-        gender=userinfo.gender)
-
     insert_data(userinfo_db, create)
-
-    return create
+    return HTTPException(status_code=200, detail="Signup Successful")

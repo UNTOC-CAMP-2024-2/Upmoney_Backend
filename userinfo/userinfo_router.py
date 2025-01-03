@@ -1,14 +1,16 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from fastapi.security import OAuth2PasswordRequestForm
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import jwt, JWTError
 from datetime import datetime, timedelta
 from database import get_userinfodb  # 데이터베이스 세션 가져오기
 from .userinfo_schema import TokenResponse, UserCreate
 from models import Userinfo
 from .userinfo_crud import get_user_by_username, verify_password, create_user
+from typing import Set
 from dotenv import load_dotenv
 import os
+
 load_dotenv()
 router = APIRouter()
 
@@ -17,11 +19,35 @@ SECRET_KEY = os.environ.get("SECRET_KEY")  # .env에서 로드된 값
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = int(os.environ.get("ACCESS_TOKEN_EXPIRE_MINUTES"))
 
+# OAuth2 설정
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login")
+
+# 블랙리스트
+token_blacklist: Set[str] = set()
+
 def create_access_token(data: dict, expires_delta: timedelta = None):
     to_encode = data.copy()
     expire = datetime.utcnow() + (expires_delta or timedelta(minutes=15))
     to_encode.update({"exp": expire})
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+
+def is_token_valid(token: str):
+    """
+    토큰 검증 및 블랙리스트 확인
+    """
+    if token in token_blacklist:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Token is no longer valid",
+        )
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        return payload
+    except JWTError:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid token",
+        )
 
 @router.post("/login", response_model=TokenResponse)
 def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_userinfodb)):
@@ -44,5 +70,21 @@ def signup(user: UserCreate, db: Session = Depends(get_userinfodb)):
         raise HTTPException(status_code=400, detail="Username already exists")
     
     # 사용자 생성
-    new_user = create_user(db, user.username, user.password, user.name, user.age, user.gender)
+    new_user = create_user(db, user.username, user.hashed_password, user.name, user.age, user.gender)
     return {"message": "User created successfully", "user_id": new_user.id}
+
+@router.post("/logout")
+def logout(token: str = Depends(oauth2_scheme)):
+    """
+    로그아웃 엔드포인트. 토큰을 블랙리스트에 추가합니다.
+    """
+    payload = is_token_valid(token)
+    exp = payload.get("exp")
+
+    # 토큰 만료 여부 확인
+    if exp and datetime.utcnow().timestamp() > exp:
+        raise HTTPException(status_code=400, detail="Token has already expired.")
+    
+    # 블랙리스트에 추가
+    token_blacklist.add(token)
+    return {"message": "Logged out successfully"}

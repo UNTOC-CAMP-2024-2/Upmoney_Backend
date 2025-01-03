@@ -63,11 +63,12 @@ class Userinfo(userinfo_Base):
     __tablename__ = "userinfo"
 
     id = Column(Integer, primary_key=True, index=True)
-    username = Column(String, unique=True, index=True, nullable=False)
-    hashed_password = Column(String, nullable=False)
-    name = Column(String, nullable=False)
+    username = Column(String(256), unique=True, index=True, nullable=False)
+    hashed_password = Column(String(256), nullable=False) 
+    name = Column(String(256), nullable=False)
     age = Column(Integer, nullable=False)
-    gender = Column(String, nullable=False)
+    gender = Column(String(256), nullable=False)
+
 
 class Monetaryluck(monetaryluck_Base):
     __tablename__ = "monetaryluck"

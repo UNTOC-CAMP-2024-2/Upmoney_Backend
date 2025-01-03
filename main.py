@@ -8,10 +8,12 @@ from totalcategory.totalcategory_router import router as totalcategory_router
 from dateconsumption.dateconsumption_router import router as dateconsumption_router
 from monetaryluck.monetaryluck_router import router as monetaryluck_router
 from userinfo.userinfo_router import router as userinfo_router
-
-
+import sys
+import os
 from database import income_Base, income_engine, consumption_Base, consumption_engine, totalcategory_Base, totalcategory_engine, dateconsumption_Base, dateconsumption_engine, scholarship_Base, scholarship_engine, averageconsumption_Base, averageconsumption_engine, userinfo_Base, userinfo_engine, monetaryluck_Base, monetaryluck_engine
 app = FastAPI()
+
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 origins = ["*"]
 
@@ -39,7 +41,7 @@ app.include_router(scholarship_router, tags=["scholarship"])
 app.include_router(totalcategory_router, tags=["totalcategory"])
 app.include_router(dateconsumption_router, tags=["dateconsumption"])
 app.include_router(monetaryluck_router, tags=["monetaryluck"])
-app.include_router(userinfo_router, tags=["userinfo"])
+app.include_router(userinfo_router, prefix="/auth", tags=["userinfo"])
 
 
 

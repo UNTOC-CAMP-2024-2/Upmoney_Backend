@@ -22,7 +22,8 @@ class Consumption(consumption_Base):
 
 class Totalcategory(totalcategory_Base):
     __tablename__ = "totalcategory"
-
+    
+    id = Column(Integer, primary_key=True, index=True)
     userid = Column(String(255), nullable=False)
     category = Column(Integer, nullable=False)
     consumption = Column(Integer, nullable=False)
@@ -61,12 +62,12 @@ class Averageconsumption(averageconsumption_Base):
 class Userinfo(userinfo_Base):
     __tablename__ = "userinfo"
 
-    userno = Column(Integer, primary_key=True, index=True)
-    userid = Column(String(256), nullable=False, unique=True)
-    password = Column(String(32), nullable=False)
-    username = Column(String(32), nullable=False)
+    id = Column(Integer, primary_key=True, index=True)
+    username = Column(String, unique=True, index=True, nullable=False)
+    hashed_password = Column(String, nullable=False)
+    name = Column(String, nullable=False)
     age = Column(Integer, nullable=False)
-    gender = Column(Integer, nullable=False)
+    gender = Column(String, nullable=False)
 
 class Monetaryluck(monetaryluck_Base):
     __tablename__ = "monetaryluck"

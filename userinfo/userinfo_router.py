@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import jwt, JWTError
 from datetime import datetime, timedelta
-from database import get_userinfodb  # 데이터베이스 세션 가져오기
+from database import get_db  # 데이터베이스 세션 가져오기
 from .userinfo_schema import TokenResponse, UserCreate
 from models import Userinfo
 from .userinfo_crud import get_user_by_username, verify_password, create_user
@@ -49,7 +49,7 @@ def is_token_valid(token: str):
             detail="Invalid token",
         )
         
-def get_current_user(token: str, db: Session = Depends(get_userinfodb)):
+def get_current_user(token: str, db: Session = Depends(get_db)):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username: str = payload.get("sub")
@@ -75,7 +75,7 @@ def get_current_user(token: str, db: Session = Depends(get_userinfodb)):
         )
 
 @router.post("/login", response_model=TokenResponse)
-def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_userinfodb)):
+def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     user = get_user_by_username(db, form_data.username)
     if not user or not verify_password(form_data.password, user.hashed_password):
         raise HTTPException(
@@ -88,7 +88,7 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
     return {"access_token": access_token, "token_type": "bearer"}
 
 @router.post("/signup")
-def signup(user: UserCreate, db: Session = Depends(get_userinfodb)):
+def signup(user: UserCreate, db: Session = Depends(get_db)):
     # 사용자 이름 중복 확인
     existing_user = db.query(Userinfo).filter(Userinfo.username == user.username).first()
     if existing_user:
@@ -103,13 +103,6 @@ def logout(token: str = Depends(oauth2_scheme)):
     """
     로그아웃 엔드포인트. 토큰을 블랙리스트에 추가합니다.
     """
-    payload = is_token_valid(token)
-    exp = payload.get("exp")
-
-    # 토큰 만료 여부 확인
-    if exp and datetime.utcnow().timestamp() > exp:
-        raise HTTPException(status_code=400, detail="Token has already expired.")
-    
     # 블랙리스트에 추가
     token_blacklist.add(token)
     return {"message": "Logged out successfully"}

@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends, Response,Security
 
 from sqlalchemy.orm import Session
-from database import get_dateconsumptiondb
+from database import get_db
 
 from .dateconsumption_schema import Create
 from models import Dateconsumption as Dateconsumption

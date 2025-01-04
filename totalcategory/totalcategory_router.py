@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends, Response,Security
 
 from sqlalchemy.orm import Session
-from database import get_totalcategorydb
+from database import get_db
 
 from .totalcategory_schema import Create
 from models import Totalcategory as Totalcategory_model
@@ -18,7 +18,7 @@ def insert_data(db, table):
 
 @router.put("/update_totalcategory", response_model=Create)
 def create_monetaryluck(totalcategory:Create, 
-                       totalcategory_db: Session = Depends(get_totalcategorydb)):
+                       totalcategory_db: Session = Depends(get_db)):
     
     create = Totalcategory_model(userid=totalcategory.userid,
         classifyid=totalcategory.classifyid,

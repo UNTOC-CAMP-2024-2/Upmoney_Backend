@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends, Response,Security
 
 from sqlalchemy.orm import Session
-from database import get_incomedb
+from database import get_db
 
 from .income_schema import Create
 from models import Income as Income_model
@@ -17,7 +17,7 @@ def insert_data(db, table):
 
 @router.post("/create_income", response_model=Create)
 def create_consumption(income:Create, 
-                       income_db: Session = Depends(get_incomedb)):
+                       income_db: Session = Depends(get_db)):
     
     create = Income_model(userid=income.userid,
         content=income.content)

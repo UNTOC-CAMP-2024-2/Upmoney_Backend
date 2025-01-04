@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends, Response,Security
 
 from sqlalchemy.orm import Session
-from database import get_averageconsumptiondb
+from database import get_db
 
 from .averageconsumption_schema import Create
 from models import Averageconsumption as Averageconsumption_model
@@ -17,7 +17,7 @@ def insert_data(db, table):
 
 @router.post("/create_averageconsumption", response_model=Create)
 def create_averageconsumption(averageconsumption:Create, 
-                averageconsumption_db: Session = Depends(get_averageconsumptiondb)):
+                averageconsumption_db: Session = Depends(get_db)):
     
     create = Averageconsumption_model(age=averageconsumption.age,
         gender=averageconsumption.gender,

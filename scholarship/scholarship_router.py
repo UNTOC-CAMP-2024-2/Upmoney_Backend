@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends, Response,Security
 
 from sqlalchemy.orm import Session
-from database import get_scholarshipdb
+from database import get_db
 
 from .scholarship_schema import Create
 from models import Scholarship as Scholarship_model
@@ -17,7 +17,7 @@ def insert_data(db, table):
 
 @router.post("/create_scholarship", response_model=Create)
 def create_monetaryluck(scholarship:Create, 
-                       scholarship_db: Session = Depends(get_scholarshipdb)):
+                       scholarship_db: Session = Depends(get_db)):
     
     create = Scholarship_model(period=scholarship.period,
         recipients=scholarship.recipients,

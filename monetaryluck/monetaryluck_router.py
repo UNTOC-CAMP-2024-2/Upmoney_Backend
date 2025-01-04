@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends, Response,Security
 
 from sqlalchemy.orm import Session
-from database import get_monetaryluckdb
+from database import get_db
 
 from .monetaryluck_schema import Create
 from models import Monetaryluck as Monetaryluck_model
@@ -17,7 +17,7 @@ def insert_data(db, table):
 
 @router.post("/create_monetaryluck", response_model=Create)
 def create_monetaryluck(monetaryluck:Create, 
-                       monetaryluck_db: Session = Depends(get_monetaryluckdb)):
+                       monetaryluck_db: Session = Depends(get_db)):
     
     create = Monetaryluck_model(weekid=monetaryluck.weekid,
         content=monetaryluck.content)

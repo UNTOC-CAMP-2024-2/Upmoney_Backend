@@ -7,6 +7,7 @@ from database import get_db  # 데이터베이스 세션 가져오기
 from .userinfo_schema import TokenResponse, UserCreate
 from models import Userinfo
 from .userinfo_crud import get_user_by_username, verify_password, create_user
+from totalcategory.totalcategory_crud import initialize_totalcategory
 from typing import Set
 from dotenv import load_dotenv
 import os
@@ -85,6 +86,9 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
         )
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(data={"sub": user.username}, expires_delta=access_token_expires)
+    
+    initialize_totalcategory(db, user.id)
+    
     return {"access_token": access_token, "token_type": "bearer"}
 
 @router.post("/signup")

@@ -1,19 +1,24 @@
 from sqlalchemy.orm import Session
 from models import Consumption
 from datetime import datetime, timedelta
+from totalcategory.totalcategory_crud import update_totalcategory
 
 def create_consumption(db: Session, user_id: int, amount: float, category: int, description: str):
-    # 현재 UTC 시간에 +9시간을 더해 KST로 설정
-    current_time_kst = datetime.utcnow() + timedelta(hours=9)
-
+    """
+    소비 내역을 추가하고 totalcategory를 업데이트합니다.
+    """
     new_consumption = Consumption(
         user_id=user_id,
         amount=amount,
         category=category,
         description=description,
-        created_at=current_time_kst
+        created_at=datetime.utcnow()
     )
     db.add(new_consumption)
     db.commit()
     db.refresh(new_consumption)
+
+    # totalcategory 업데이트
+    update_totalcategory(db, user_id, category, amount)
+
     return new_consumption

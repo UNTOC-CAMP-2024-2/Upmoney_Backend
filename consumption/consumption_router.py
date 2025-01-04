@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from database import get_db
 from consumption.consumption_crud import create_consumption
 from consumption.consumption_schema import ConsumptionCreate
+from totalcategory.totalcategory_crud import update_totalcategory
 from userinfo.userinfo_router import get_current_user
 from models import Userinfo
 
@@ -23,4 +24,13 @@ def save_consumption(
         category=category,
         description=description,
     )
+    
+    update_totalcategory(
+        db=db,
+        user_id=current_user.id,
+        category=category,
+        amount=amount
+    )
+    
+    
     return {"message": "Consumption saved successfully", "data": consumption}

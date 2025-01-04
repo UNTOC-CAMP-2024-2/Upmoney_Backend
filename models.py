@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey, Boolean, Table
+from sqlalchemy.orm import relationship
 from database import income_Base, consumption_Base, totalcategory_Base, dateconsumption_Base, scholarship_Base, averageconsumption_Base, userinfo_Base, monetaryluck_Base
 
 
@@ -14,11 +15,13 @@ class Consumption(consumption_Base):
     __tablename__ = "consumption"
 
     id = Column(Integer, primary_key=True, index=True)
-    userid = Column(String(255), nullable=False)
-    classifyid = Column(Integer, nullable=False)
-    content = Column(Integer, nullable=False)
-    title = Column(String(255), nullable=False)
-    date = Column(DateTime, nullable = False)
+    user_id = Column(Integer, ForeignKey("userinfo.id"), nullable=False)
+    amount = Column(Integer, nullable=False)
+    category = Column(Integer, nullable=False)  # 0: 소득, 1~5: 소비 카테고리
+    description = Column(String(255), nullable=False)
+    created_at = Column(DateTime, nullable=False)
+
+    user = relationship("Userinfo", back_populates="consumptions")
 
 class Totalcategory(totalcategory_Base):
     __tablename__ = "totalcategory"
@@ -68,6 +71,8 @@ class Userinfo(userinfo_Base):
     name = Column(String(256), nullable=False)
     age = Column(Integer, nullable=False)
     gender = Column(String(256), nullable=False)
+    
+    consumptions = relationship("Consumption", back_populates="user")
 
 
 class Monetaryluck(monetaryluck_Base):

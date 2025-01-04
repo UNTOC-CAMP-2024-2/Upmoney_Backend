@@ -65,18 +65,18 @@ def verify_token(token: str = Depends(oauth2_scheme)):
         )
 
 # 데이터베이스 테이블 생성
+userinfo_Base.metadata.create_all(bind=userinfo_engine)
 income_Base.metadata.create_all(bind=income_engine)
 consumption_Base.metadata.create_all(bind=consumption_engine)
 totalcategory_Base.metadata.create_all(bind=totalcategory_engine)
 dateconsumption_Base.metadata.create_all(bind=dateconsumption_engine)
 scholarship_Base.metadata.create_all(bind=scholarship_engine)
 averageconsumption_Base.metadata.create_all(bind=averageconsumption_engine)
-userinfo_Base.metadata.create_all(bind=userinfo_engine)
 monetaryluck_Base.metadata.create_all(bind=monetaryluck_engine)
 
 # 라우터 등록
 app.include_router(averageconsumption_router, tags=["averageconsumption"])
-app.include_router(consumption_router, tags=["consumption"])
+app.include_router(consumption_router, prefix="/consumption", tags=["consumption"])
 app.include_router(income_router, tags=["income"])
 app.include_router(scholarship_router, tags=["scholarship"])
 app.include_router(totalcategory_router, tags=["totalcategory"])

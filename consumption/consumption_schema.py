@@ -1,9 +1,6 @@
-from pydantic import BaseModel
-from datetime import datetime
+from pydantic import BaseModel, Field
 
-class Create(BaseModel):
-    userid: str
-    classifyid: int
-    content: int
-    title: str
-    date: datetime
+class ConsumptionCreate(BaseModel):
+    amount: int
+    category: int = Field(..., ge=0, le=5)  # 0에서 5 사이의 값만 허용
+    description: str

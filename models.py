@@ -17,14 +17,6 @@ class Userinfo(Base):
     consumptions = relationship("Consumption", back_populates="user")
 
 
-class Income(Base):
-    __tablename__ = "income"
-
-    id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey("userinfo.id"), nullable=False)
-    content = Column(Integer, nullable=False)
-
-
 class Consumption(Base):
     __tablename__ = "consumption"
 

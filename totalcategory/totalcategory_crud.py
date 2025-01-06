@@ -11,7 +11,7 @@ def initialize_totalcategory(db: Session, user_id: int):
     
     # category별 소비 합계 계산
     category_totals = (
-        db.query(Consumption.category, db.func.sum(Consumption.amount).label("total"))
+        db.query(Consumption.category, func.sum(Consumption.amount).label("total"))
         .filter(Consumption.user_id == user_id)
         .group_by(Consumption.category)
         .all()

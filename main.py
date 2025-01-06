@@ -5,7 +5,6 @@ from jose import jwt, JWTError
 from userinfo.userinfo_crud import is_token_blacklisted
 from averageconsumption.averageconsumption_router import router as averageconsumption_router
 from consumption.consumption_router import router as consumption_router
-from income.income_router import router as income_router
 from scholarship.scholarship_router import router as scholarship_router
 from totalcategory.totalcategory_router import router as totalcategory_router
 from dateconsumption.dateconsumption_router import router as dateconsumption_router
@@ -62,7 +61,6 @@ Base.metadata.create_all(bind=engine)
 app.include_router(userinfo_router, prefix="/auth", tags=["userinfo"])
 app.include_router(averageconsumption_router, tags=["averageconsumption"])
 app.include_router(consumption_router, prefix="/consumption", tags=["consumption"])
-app.include_router(income_router, tags=["income"])
 app.include_router(scholarship_router, tags=["scholarship"])
 app.include_router(totalcategory_router, tags=["totalcategory"])
 app.include_router(dateconsumption_router, tags=["dateconsumption"])

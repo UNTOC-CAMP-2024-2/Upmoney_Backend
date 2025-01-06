@@ -4,7 +4,7 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import jwt, JWTError
 from datetime import datetime, timedelta
 from database import get_db  # 데이터베이스 세션 가져오기
-from .userinfo_schema import TokenResponse, UserCreate
+from .userinfo_schema import TokenResponse, UserCreate, UserInfoResponse
 from models import Userinfo
 from .userinfo_crud import get_user_by_username, verify_password, create_user
 from totalcategory.totalcategory_crud import initialize_totalcategory
@@ -110,3 +110,14 @@ def logout(token: str = Depends(oauth2_scheme)):
     # 블랙리스트에 추가
     token_blacklist.add(token)
     return {"message": "Logged out successfully"}
+
+@router.get("/userinfo", response_model=UserInfoResponse)
+def get_user_info(db: Session = Depends(get_db), current_user: Userinfo = Depends(get_current_user)):
+    """
+    현재 사용자 정보를 반환합니다.
+    """
+    return {
+        "name": current_user.name,
+        "age": current_user.age,
+        "gender": current_user.gender,
+    }

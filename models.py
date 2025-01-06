@@ -76,5 +76,4 @@ class Monetaryluck(Base):
     __tablename__ = "monetaryluck"
 
     id = Column(Integer, primary_key=True, index=True)
-    week_id = Column(Integer, nullable=False)
     content = Column(String(256), nullable=False)

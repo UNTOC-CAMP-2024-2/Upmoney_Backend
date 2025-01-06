@@ -1,27 +1,25 @@
-from fastapi import APIRouter, HTTPException, Depends, Response,Security
-
-from sqlalchemy.orm import Session
-from database import get_db
-
-from .monetaryluck_schema import Create
-from models import Monetaryluck as Monetaryluck_model
+from fastapi import APIRouter
+import random
+from .monetaryluck_schema import FortuneResponse
 
 router = APIRouter(
-    prefix="/monetaryluck"
+    prefix="/monetaryluck",
+    tags=["monetaryluck"]
 )
 
-def insert_data(db, table):
-    db.add(table)
-    db.commit()
-    db.refresh(table)
+# 운세 리스트 정의
+FORTUNES = [
+    "오늘은 새로운 기회가 찾아올 운입니다!",
+    "조심하세요. 오늘은 신중한 결정을 내려야 할 날입니다.",
+    "좋은 소식이 있을 예정입니다. 기대해 보세요!",
+    "노력이 결실을 맺을 운입니다. 힘내세요!",
+    "운이 따르는 하루가 될 것입니다. 자신감을 가지세요!"
+]
 
-@router.post("/create_monetaryluck", response_model=Create)
-def create_monetaryluck(monetaryluck:Create, 
-                       monetaryluck_db: Session = Depends(get_db)):
-    
-    create = Monetaryluck_model(weekid=monetaryluck.weekid,
-        content=monetaryluck.content)
-
-    insert_data(monetaryluck_db, create)
-
-    return create
+@router.get("/random", response_model=FortuneResponse)
+def get_random_fortune():
+    """
+    랜덤 운세를 반환합니다.
+    """
+    random_fortune = random.choice(FORTUNES)
+    return {"fortune": random_fortune}

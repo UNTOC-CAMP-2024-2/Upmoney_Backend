@@ -6,8 +6,9 @@ from consumption.consumption_schema import ConsumptionCreate
 from totalcategory.totalcategory_crud import update_totalcategory
 from dateconsumption.dateconsumption_crud import update_dateconsumption_on_input
 from userinfo.userinfo_router import get_current_user
-from models import Userinfo
+from models import Userinfo, Consumption
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 router = APIRouter()
 
@@ -45,3 +46,23 @@ def save_consumption(
     
     
     return {"message": "Consumption saved successfully", "data": consumption}
+
+
+@router.get("/consumption/recent")
+def get_recent_consumptions(db: Session = Depends(get_db), current_user = Depends(get_current_user)):
+    consumptions = (
+        db.query(Consumption)
+        .filter(Consumption.user_id == current_user.id)
+        .order_by(Consumption.created_at.desc())
+        .limit(5)
+        .all()
+    )
+    return [
+        {
+            "id": c.id,
+            "amount": c.amount,
+            "category": c.category,
+            "description": c.description,
+            "created_at": c.created_at.astimezone(ZoneInfo("Asia/Seoul"))
+        } for c in consumptions
+    ]

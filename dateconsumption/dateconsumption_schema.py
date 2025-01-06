@@ -1,9 +1,10 @@
 from pydantic import BaseModel
-from datetime import datetime
+from datetime import date
 
 class Create(BaseModel):
-    userid: str
-    classifyid: int
-    content: int
-    title: str
-    date: datetime
+    date: date
+    total_income: float
+    total_consumption: float
+
+    class Config:
+        from_attributes = True

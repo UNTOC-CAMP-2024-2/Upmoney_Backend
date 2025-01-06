@@ -24,3 +24,25 @@ def create_consumption(db: Session, user_id: int, amount: float, category: int, 
 
 
     return new_consumption
+
+def update_consumption(db: Session, consumption_id: int, user_id: int, amount: int, category: int, description: str):
+    """
+    특정 소비/소득 내역을 업데이트합니다.
+    """
+    consumption = db.query(Consumption).filter(
+        Consumption.id == consumption_id,
+        Consumption.user_id == user_id
+    ).first()
+
+    if not consumption:
+        raise ValueError("해당 소비/소득 내역이 존재하지 않습니다.")
+
+    # 기존 값 업데이트
+    consumption.amount = amount
+    consumption.category = category
+    consumption.description = description
+
+    db.commit()
+    db.refresh(consumption)
+
+    return consumption

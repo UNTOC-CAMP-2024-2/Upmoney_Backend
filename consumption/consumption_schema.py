@@ -13,3 +13,8 @@ class ConsumptionResponse(BaseModel):
     category: int
     description: str
     created_at: datetime
+    
+class ConsumptionUpdate(BaseModel):
+    amount: int
+    category: int = Field(..., ge=0, le=5)  # 0에서 5 사이의 값만 허용
+    description: str

@@ -4,8 +4,10 @@ from database import get_db
 from consumption.consumption_crud import create_consumption
 from consumption.consumption_schema import ConsumptionCreate
 from totalcategory.totalcategory_crud import update_totalcategory
+from dateconsumption.dateconsumption_crud import update_dateconsumption_on_input
 from userinfo.userinfo_router import get_current_user
 from models import Userinfo
+from datetime import datetime
 
 router = APIRouter()
 
@@ -30,6 +32,15 @@ def save_consumption(
         user_id=current_user.id,
         category=category,
         amount=amount
+    )
+    
+    today_date = datetime.now().date()
+    update_dateconsumption_on_input(
+        db=db,
+        user_id=current_user.id,
+        category=category,
+        amount=amount,
+        date=today_date,
     )
     
     

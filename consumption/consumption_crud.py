@@ -18,7 +18,6 @@ def create_consumption(db: Session, user_id: int, amount: float, category: int, 
     db.commit()
     db.refresh(new_consumption)
 
-    # totalcategory 업데이트
-    update_totalcategory(db, user_id, category, amount)
+
 
     return new_consumption

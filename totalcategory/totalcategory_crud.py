@@ -22,7 +22,7 @@ def initialize_totalcategory(db: Session, user_id: int):
         db.add(Totalcategory(user_id=user_id, category=category, consumption=total))
     
     # category 초기화 후 누락된 카테고리를 0으로 설정
-    all_categories = {0, 1, 2, 3, 4, 5}  # 전체 카테고리 목록
+    all_categories = {0, 1, 2, 3, 4, 5, 6}  # 전체 카테고리 목록
     existing_categories = {row.category for row in category_totals}
     for category in all_categories - existing_categories:
         db.add(Totalcategory(user_id=user_id, category=category, consumption=0))

@@ -3,7 +3,7 @@ from pydantic import BaseModel
 # 공통 속성
 class AverageConsumptionBase(BaseModel):
     age: int
-    gender: int
+    gender: str
     classify_id: int
     content: int
 

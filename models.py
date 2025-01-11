@@ -23,7 +23,7 @@ class Consumption(Base):
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("userinfo.id"), nullable=False)
     amount = Column(Integer, nullable=False)
-    category = Column(Integer, nullable=False)  # 0: ?†Œ?“, 1~5: ?†Œë¹? ì¹´í…Œê³ ë¦¬
+    category = Column(Integer, nullable=False)  # 0: ?ï¿½ï¿½?ï¿½ï¿½, 1~5: ?ï¿½ï¿½ï¿½? ì¹´í…Œê³ ë¦¬
     description = Column(String(255), nullable=False)
     created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
 
@@ -63,7 +63,7 @@ class Averageconsumption(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     age = Column(Integer, nullable=False)
-    gender = Column(Integer, nullable=False)
+    gender = Column(String(256), nullable=False)
     classify_id = Column(Integer, nullable=False)
     content = Column(Integer, nullable=False)
 

@@ -38,16 +38,10 @@ def get_average_consumption(
     current_user=Depends(get_current_user),
 ):
     try:
-        # 현재 유저 정보에서 성별과 나이를 가져옴
-        gender = current_user.gender
-        age = current_user.age
-
         # 데이터 처리 함수 호출
         return get_average_consumption_by_user(
             db=db,
-            gender=gender,
-            age=age,
-            user_id=current_user.id,
+            current_user=current_user,
             classify_id=classify_id,
         )
     except HTTPException as e:

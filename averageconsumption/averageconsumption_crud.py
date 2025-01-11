@@ -31,20 +31,18 @@ def update_record(db: Session, record_id: int, data: AverageConsumptionUpdate):
     db.refresh(record)
     return record
 
-# GET - 현재 유저의 성별, 나이대, classify_id에 맞는 값 리턴
+# GET - 현재 유저의 데이터를 기반으로 값을 계산
 def get_average_consumption_by_user(
     db: Session,
-    gender: int,
-    age: int,
-    user_id: int,
+    current_user,
     classify_id: int,
 ):
     # 나이대 계산 (20, 30, 40 등)
-    age_group = (age // 10) * 10
+    age_group = (current_user.age // 10) * 10
 
     # Averageconsumption에서 조건에 맞는 데이터 조회
     avg_consumption = db.query(Averageconsumption).filter(
-        Averageconsumption.gender == gender,
+        Averageconsumption.gender == current_user.gender,
         Averageconsumption.age == age_group,
         Averageconsumption.classify_id == classify_id,
     ).first()
@@ -52,10 +50,10 @@ def get_average_consumption_by_user(
     if not avg_consumption:
         raise HTTPException(status_code=404, detail="No average consumption data found")
 
-    # Dateconsumption에서 현재 유저의 가장 최근 데이터 조회
+    # Dateconsumption에서 현재 유저의 최신 데이터 조회
     date_consumption = (
         db.query(Dateconsumption)
-        .filter(Dateconsumption.user_id == user_id)
+        .filter(Dateconsumption.user_id == current_user.id)
         .order_by(Dateconsumption.date.desc())
         .first()
     )
@@ -69,8 +67,9 @@ def get_average_consumption_by_user(
     else:
         result = avg_consumption.content - date_consumption.total_consumption
 
+    # 결과 반환
     return {
-        "gender": gender,
+        "gender": current_user.gender,
         "age_group": age_group,
         "classify_id": classify_id,
         "difference": result,

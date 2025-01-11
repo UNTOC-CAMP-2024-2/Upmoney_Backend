@@ -23,7 +23,7 @@ class Consumption(Base):
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("userinfo.id"), nullable=False)
     amount = Column(Integer, nullable=False)
-    category = Column(Integer, nullable=False)  # 0: ì†Œë“, 1~5: ì†Œë¹„ ì¹´í…Œê³ ë¦¬
+    category = Column(Integer, nullable=False)  # 0: ?†Œ?“, 1~5: ?†Œë¹? ì¹´í…Œê³ ë¦¬
     description = Column(String(255), nullable=False)
     created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
 
@@ -54,13 +54,9 @@ class Scholarship(Base):
     __tablename__ = "scholarship"
 
     id = Column(Integer, primary_key=True, index=True)
-    period = Column(String(32), nullable=False)
-    recipients = Column(String(256), nullable=False)
-    money = Column(String(256), nullable=False)
-    how_to_accept = Column(String(256), nullable=False)
-    subject = Column(String(256), nullable=False)
-    qualification = Column(String(256), nullable=False)
-    inquiry = Column(String(256), nullable=False)
+    page_id = Column(Integer, nullable=False) # 0~1
+    name = Column(String(255), nullable=False)
+    link = Column(String(255), unique=True, nullable=False)
 
 
 class Averageconsumption(Base):

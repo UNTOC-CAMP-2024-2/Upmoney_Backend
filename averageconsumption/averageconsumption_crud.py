@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from models import Averageconsumption, Dateconsumption
+from models import Averageconsumption, Totalcategory
 from fastapi import HTTPException
 from averageconsumption.averageconsumption_schema import AverageConsumptionCreate, AverageConsumptionUpdate
 from datetime import datetime, timedelta
@@ -31,8 +31,8 @@ def update_record(db: Session, record_id: int, data: AverageConsumptionUpdate):
     db.refresh(record)
     return record
 
-# GET - 현재 유저의 데이터를 기반으로 값을 계산
-def get_average_consumption_by_user(
+# GET - classify_id, gender, 나이대별 Averageconsumption - Totalcategory
+def get_average_vs_totalcategory(
     db: Session,
     current_user,
     classify_id: int,
@@ -50,22 +50,17 @@ def get_average_consumption_by_user(
     if not avg_consumption:
         raise HTTPException(status_code=404, detail="No average consumption data found")
 
-    # Dateconsumption에서 현재 유저의 최신 데이터 조회
-    date_consumption = (
-        db.query(Dateconsumption)
-        .filter(Dateconsumption.user_id == current_user.id)
-        .order_by(Dateconsumption.date.desc())
-        .first()
-    )
+    # Totalcategory에서 조건에 맞는 데이터 조회
+    total_category = db.query(Totalcategory).filter(
+        Totalcategory.user_id == current_user.id,
+        Totalcategory.category == classify_id,
+    ).first()
 
-    if not date_consumption:
-        raise HTTPException(status_code=404, detail="No date consumption data found for the user")
+    if not total_category:
+        raise HTTPException(status_code=404, detail="No total category data found")
 
-    # classify_id에 따른 값 계산
-    if classify_id == 0:
-        result = avg_consumption.content - date_consumption.total_income
-    else:
-        result = avg_consumption.content - date_consumption.total_consumption
+    # 차이 계산: Averageconsumption.content - Totalcategory.consumption
+    result = avg_consumption.content - total_category.consumption
 
     # 결과 반환
     return {

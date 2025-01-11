@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from database import get_db
 from averageconsumption.averageconsumption_crud import create_record, update_record
 from averageconsumption.averageconsumption_schema import AverageConsumptionCreate, AverageConsumptionUpdate, AverageConsumptionResponse
-from averageconsumption.averageconsumption_crud import get_average_consumption_by_user
+from averageconsumption.averageconsumption_crud import get_average_vs_totalcategory
 from userinfo.userinfo_router import get_current_user
 
 
@@ -30,16 +30,15 @@ def update_average_consumption(id: int, data: AverageConsumptionUpdate, db: Sess
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
     
-# GET - 현재 유저 데이터 기반 필터
-@router.get("/")
-def get_average_consumption(
+# GET - classify_id, gender, 나이대별 Averageconsumption - Totalcategory
+@router.get("/difference")
+def get_difference(
     classify_id: int,
     db: Session = Depends(get_db),
     current_user=Depends(get_current_user),
 ):
     try:
-        # 데이터 처리 함수 호출
-        return get_average_consumption_by_user(
+        return get_average_vs_totalcategory(
             db=db,
             current_user=current_user,
             classify_id=classify_id,

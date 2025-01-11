@@ -13,12 +13,16 @@ from userinfo.userinfo_router import router as userinfo_router
 import sys
 import os
 from database import Base, engine
+from fastapi.middleware.cors import CORSMiddleware
+
+
 
 # 환경 변수 설정
 SECRET_KEY = os.environ.get("SECRET_KEY", "your_secret_key")
 ALGORITHM = "HS256"
 
 app = FastAPI()
+
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login")
 
@@ -28,7 +32,7 @@ origins = ["*"]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -70,4 +74,4 @@ app.include_router(monetaryluck_router, tags=["monetaryluck"])
 if __name__ == "__main__":
     import uvicorn
 
-    uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)

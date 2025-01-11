@@ -43,12 +43,11 @@ class Dateconsumption(Base):
     __tablename__ = "dateconsumption"
 
     id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey("userinfo.id"), nullable=False)
-    classify_id = Column(Integer, nullable=False)
-    content = Column(Integer, nullable=False)
-    title = Column(String(255), nullable=False)
-    date = Column(DateTime, nullable=False)
-
+    user_id = Column(Integer, ForeignKey("userinfo.id"), nullable=False)  # 사용자 구분
+    date = Column(DateTime, nullable=False)  # 날짜
+    total_income = Column(Integer, default=0, nullable=False)  # 해당 날짜의 소득 합계
+    total_consumption = Column(Integer, default=0, nullable=False)  # 해당 날짜의 소비 합계
+    
 
 class Scholarship(Base):
     __tablename__ = "scholarship"
@@ -73,5 +72,4 @@ class Monetaryluck(Base):
     __tablename__ = "monetaryluck"
 
     id = Column(Integer, primary_key=True, index=True)
-    week_id = Column(Integer, nullable=False)
     content = Column(String(256), nullable=False)

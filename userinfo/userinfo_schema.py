@@ -14,3 +14,12 @@ class UserCreate(BaseModel):
     name: str
     age: int
     gender: Literal["male", "female", "other"]
+    
+
+class UserInfoResponse(BaseModel):
+    name: str
+    age: int
+    gender: str
+
+    class Config:
+        from_attributes = True

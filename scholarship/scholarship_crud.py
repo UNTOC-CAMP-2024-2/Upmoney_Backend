@@ -24,3 +24,21 @@ def insert_scholarship(db: Session, data: dict):
 def delete_scholarships_by_page_id(db: Session, page_id: int):
     db.query(Scholarship).filter(Scholarship.page_id == page_id).delete()
     db.commit()
+
+def get_scholarships_by_page_id(db: Session, page_id: int):
+    """
+    특정 page_id를 가진 장학금 데이터를 가져오는 함수.
+
+    Returns:
+    - List[dict]: 장학금 데이터를 딕셔너리 리스트로 반환.
+    """
+    scholarships = db.query(Scholarship).filter(Scholarship.page_id == page_id).all()
+    return [
+        {
+            "id": scholarship.id,
+            "page_id": scholarship.page_id,
+            "name": scholarship.name,
+            "link": scholarship.link,
+        }
+        for scholarship in scholarships
+    ]

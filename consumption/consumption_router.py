@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Body
 from sqlalchemy.orm import Session
 from database import get_db
 from consumption.consumption_crud import create_consumption, update_consumption
@@ -14,9 +14,9 @@ router = APIRouter()
 
 @router.post("/consumption")
 def save_consumption(
-    amount: int,
-    category: int,
-    description: str,
+    amount: int = Body(...),
+    category: int = Body(...),
+    description: str = Body(...),
     db: Session = Depends(get_db),
     current_user: Userinfo = Depends(get_current_user)
 ):

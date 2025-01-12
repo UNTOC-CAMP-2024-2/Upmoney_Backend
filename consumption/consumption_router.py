@@ -17,7 +17,6 @@ def save_consumption(
     amount: int = Body(...),
     category: int = Body(...),
     description: str = Body(...),
-    token: str = Header(...),
     db: Session = Depends(get_db),
     current_user: Userinfo = Depends(get_current_user)
 ):

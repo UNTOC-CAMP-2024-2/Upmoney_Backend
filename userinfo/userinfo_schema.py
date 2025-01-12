@@ -17,6 +17,7 @@ class UserCreate(BaseModel):
     
 
 class UserInfoResponse(BaseModel):
+    username: str
     name: str
     age: int
     gender: str

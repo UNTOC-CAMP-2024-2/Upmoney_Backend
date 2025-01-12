@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Body
+from fastapi import APIRouter, Depends, HTTPException, status, Body, Header
 from sqlalchemy.orm import Session
 from database import get_db
 from consumption.consumption_crud import create_consumption, update_consumption
@@ -17,6 +17,7 @@ def save_consumption(
     amount: int = Body(...),
     category: int = Body(...),
     description: str = Body(...),
+    token: str = Header(...),
     db: Session = Depends(get_db),
     current_user: Userinfo = Depends(get_current_user)
 ):

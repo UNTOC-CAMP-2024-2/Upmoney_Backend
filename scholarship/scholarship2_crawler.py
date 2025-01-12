@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 import time
 from urllib.parse import urljoin
 
@@ -14,7 +15,17 @@ def fetch_scholarships2(limit=15):
     - List[dict]: 크롤링한 장학금 데이터 리스트
     """
     url = "https://cse.pusan.ac.kr/cse/14651/subview.do?enc=Zm5jdDF8QEB8JTJGYmJzJTJGY3NlJTJGMjYwNSUyRmFydGNsTGlzdC5kbyUzRmJic09wZW5XcmRTZXElM0QlMjZpc1ZpZXdNaW5lJTNEZmFsc2UlMjZzcmNoQ29sdW1uJTNEc2olMjZwYWdlJTNEMSUyNnNyY2hXcmQlM0QlMjZyZ3NCZ25kZVN0ciUzRCUyNmJic0NsU2VxJTNENDIyOSUyNnJnc0VuZGRlU3RyJTNEJTI22"
-    driver = webdriver.Chrome()
+    
+    # ChromeOptions 설정: 헤드리스 모드
+    options = Options()
+    options.add_argument('--headless')  # 헤드리스 모드
+    options.add_argument('--no-sandbox')  # 샌드박스 모드 비활성화 (일부 환경에서 필요)
+    options.add_argument('--disable-gpu')  # GPU 비활성화 (일부 환경에서 필요)
+    options.add_argument('--remote-debugging-port=9222')  # 원격 디버깅 포트 설정
+    options.add_argument('--disable-dev-shm-usage')  # 공유 메모리 비활성화
+
+    # 드라이버 설정 (헤드리스 모드로 크롬 실행)
+    driver = webdriver.Chrome(options=options)
     driver.get(url)
 
     # 페이지 로드 대기

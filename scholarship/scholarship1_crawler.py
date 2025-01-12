@@ -3,6 +3,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.chrome.options import Options
 import time
 
 def fetch_scholarships(limit=30):
@@ -10,9 +11,18 @@ def fetch_scholarships(limit=30):
     장학금 정보를 크롤링하는 함수.
     - 최대 크롤링 항목: limit
     """
-    # URL 설정
+    # ChromeDriver 설정: 헤드리스 모드로 설정
+    options = Options()
+    options.add_argument('--headless')  # 헤드리스 모드
+    options.add_argument('--no-sandbox')  # 샌드박스 모드 비활성화 (일부 환경에서 필요)
+    options.add_argument('--disable-gpu')  # GPU 비활성화 (일부 환경에서 필요)
+    options.add_argument('--remote-debugging-port=9222')  # 원격 디버깅 포트 설정
+    options.add_argument('--disable-dev-shm-usage')  # 공유 메모리 비활성화
+
+    # 드라이버 설정
+    driver = webdriver.Chrome(options=options)
+    
     url = "https://onestop.pusan.ac.kr/page?menuCD=000000000000062#popup"
-    driver = webdriver.Chrome()
     driver.get(url)
 
     try:

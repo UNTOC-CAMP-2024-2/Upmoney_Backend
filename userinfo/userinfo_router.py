@@ -117,6 +117,7 @@ def get_user_info(db: Session = Depends(get_db), current_user: Userinfo = Depend
     현재 사용자 정보를 반환합니다.
     """
     return {
+        "id": current_user.username,
         "name": current_user.name,
         "age": current_user.age,
         "gender": current_user.gender,

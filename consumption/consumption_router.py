@@ -35,7 +35,7 @@ def save_consumption(
         amount=amount
     )
     
-    today_date = datetime.now().date()
+    today_date = datetime.now(ZoneInfo("Asia/Seoul")).date()
     update_dateconsumption_on_input(
         db=db,
         user_id=current_user.id,

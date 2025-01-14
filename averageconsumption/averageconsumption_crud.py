@@ -60,7 +60,7 @@ def get_average_vs_totalcategory(
         raise HTTPException(status_code=404, detail="No total category data found")
 
     # 차이 계산: Averageconsumption.content - Totalcategory.consumption
-    result = avg_consumption.content - total_category.consumption
+    result =  total_category.consumption - avg_consumption.content
 
     # 결과 반환
     return {

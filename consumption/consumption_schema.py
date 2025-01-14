@@ -3,7 +3,7 @@ from datetime import datetime
 
 class ConsumptionCreate(BaseModel):
     amount: int
-    category: int = Field(..., ge=0, le=6)  # 0에서 5 사이의 값만 허용
+    category: int = Field(..., ge=0, le=6)  # 0에서 6 사이의 값만 허용
     description: str
 
 
@@ -16,5 +16,5 @@ class ConsumptionResponse(BaseModel):
     
 class ConsumptionUpdate(BaseModel):
     amount: int
-    category: int = Field(..., ge=0, le=6)  # 0에서 5 사이의 값만 허용
+    category: int = Field(..., ge=0, le=6)  # 0에서 6 사이의 값만 허용
     description: str

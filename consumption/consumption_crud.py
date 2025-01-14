@@ -5,7 +5,7 @@ from totalcategory.totalcategory_crud import update_totalcategory
 from zoneinfo import ZoneInfo
 
 from totalcategory.totalcategory_crud import update_totalcategory
-from dateconsumption.dateconsumption_crud import update_dateconsumption_on_update
+from dateconsumption.dateconsumption_crud import update_dateconsumption_on_update, update_dateconsumption_on_delete
 
 def create_consumption(db: Session, user_id: int, amount: float, category: int, description: str):
     """

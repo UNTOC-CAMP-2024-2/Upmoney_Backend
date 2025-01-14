@@ -72,3 +72,38 @@ def update_consumption(db: Session, consumption_id: int, user_id: int, amount: i
 
 
     return consumption
+
+
+def delete_consumption(db: Session, consumption_id: int, user_id: int):
+    """
+    소비/소득 내역을 삭제하고 Totalcategory 및 Dateconsumption 테이블을 업데이트합니다.
+    """
+    # 소비 데이터 가져오기
+    consumption = db.query(Consumption).filter(
+        Consumption.id == consumption_id,
+        Consumption.user_id == user_id
+    ).first()
+
+    if not consumption:
+        raise ValueError("해당 소비/소득 내역이 존재하지 않습니다.")
+
+    # 소비 데이터를 삭제하기 전에 카테고리와 금액 정보를 저장
+    category = consumption.category
+    amount = consumption.amount
+    created_date = consumption.created_at.date()
+
+    # 데이터 삭제
+    db.delete(consumption)
+    db.commit()
+
+    # Totalcategory 업데이트 (삭제된 소비 데이터 반영)
+    update_totalcategory(db=db, user_id=user_id, category=category, amount=-amount)
+
+    # Dateconsumption 업데이트 (삭제된 소비 데이터 반영)
+    update_dateconsumption_on_delete(
+        db=db,
+        user_id=user_id,
+        date=created_date,
+        category=category,
+        amount=amount
+    )

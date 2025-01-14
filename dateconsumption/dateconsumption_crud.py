@@ -79,3 +79,28 @@ def update_dateconsumption_on_update(
     date_entry.total_consumption = max(date_entry.total_consumption, 0)
 
     db.commit()
+
+
+def update_dateconsumption_on_delete(db: Session, user_id: int, date: str, category: int, amount: int):
+    """
+    소비/소득 삭제 시 Dateconsumption 테이블 업데이트
+    """
+    date_entry = db.query(Dateconsumption).filter(
+        Dateconsumption.user_id == user_id,
+        Dateconsumption.date == date
+    ).first()
+
+    if date_entry:
+        if category == 0:
+            # 소득 삭제 시 total_income 감소
+            date_entry.total_income -= amount
+        else:
+            # 소비 삭제 시 total_consumption 감소
+            date_entry.total_consumption -= amount
+
+        # 데이터가 음수가 되면 0으로 고정
+        date_entry.total_income = max(date_entry.total_income, 0)
+        date_entry.total_consumption = max(date_entry.total_consumption, 0)
+
+        db.commit()
+        db.refresh(date_entry)

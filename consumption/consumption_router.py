@@ -89,7 +89,7 @@ def get_recent_consumptions(db: Session = Depends(get_db), current_user = Depend
 
 @router.put("/consumption/{consumption_id}")
 def update_consumption_entry(
-    consumption_id: int = Body(...),
+    consumption_id: int,
     amount: int = Body(...),
     category: int = Body(...),
     description: str = Body(...),
